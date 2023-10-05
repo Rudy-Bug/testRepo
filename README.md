@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# testRepo
-=======
 
 thisRepoownedbyKy
 testobject1
