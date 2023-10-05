@@ -9,4 +9,8 @@ testobject3
 
 
 hello 123455
->>>>>>> 1074bd9 (update)
+=======
+helloworld
+abc123
+
+>>>>>>> 0de6daa (abc123)
