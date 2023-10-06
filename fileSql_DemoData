@@ -1,0 +1,179 @@
+-- Adminer 4.8.1 MySQL 8.1.0 dump
+
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+
+SET NAMES utf8mb4;
+
+DROP TABLE IF EXISTS `Chi_Tiet_Hoa_Don`;
+CREATE TABLE `Chi_Tiet_Hoa_Don` (
+  `ID_HoaDon` int NOT NULL,
+  `ID_PhieuGiaHan` int DEFAULT NULL,
+  `ID_DichVu` int DEFAULT NULL,
+  `ID_PhieuDat` int NOT NULL,
+  `ID_Phong` int NOT NULL,
+  `Tong_Tien` int NOT NULL,
+  KEY `ID_HoaDon` (`ID_HoaDon`),
+  KEY `ID_PhieuGiaHan` (`ID_PhieuGiaHan`),
+  KEY `ID_DichVu` (`ID_DichVu`),
+  KEY `ID_PhieuDat` (`ID_PhieuDat`),
+  KEY `ID_Phong` (`ID_Phong`),
+  CONSTRAINT `Chi_Tiet_Hoa_Don_ibfk_1` FOREIGN KEY (`ID_HoaDon`) REFERENCES `Hoa_Don` (`ID_HoaDon`),
+  CONSTRAINT `Chi_Tiet_Hoa_Don_ibfk_2` FOREIGN KEY (`ID_PhieuGiaHan`) REFERENCES `Phieu_Gia_Han` (`ID_PhieuGiaHan`),
+  CONSTRAINT `Chi_Tiet_Hoa_Don_ibfk_3` FOREIGN KEY (`ID_DichVu`) REFERENCES `Dich_Vu` (`ID_DichVu`),
+  CONSTRAINT `Chi_Tiet_Hoa_Don_ibfk_4` FOREIGN KEY (`ID_PhieuDat`) REFERENCES `Phieu_Dat_Phong` (`ID_PhieuDat`),
+  CONSTRAINT `Chi_Tiet_Hoa_Don_ibfk_5` FOREIGN KEY (`ID_Phong`) REFERENCES `Phong` (`ID_Phong`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+DROP TABLE IF EXISTS `Chi_Tiet_Phieu_Dat`;
+CREATE TABLE `Chi_Tiet_Phieu_Dat` (
+  `ID_PhieuDat` int NOT NULL,
+  `ID_Phong` int NOT NULL,
+  `Ngay_Tra_Phong` varchar(50) COLLATE ucs2_vietnamese_ci NOT NULL,
+  KEY `ID_PhieuDat` (`ID_PhieuDat`),
+  KEY `ID_Phong` (`ID_Phong`),
+  CONSTRAINT `Chi_Tiet_Phieu_Dat_ibfk_1` FOREIGN KEY (`ID_PhieuDat`) REFERENCES `Phieu_Dat_Phong` (`ID_PhieuDat`),
+  CONSTRAINT `Chi_Tiet_Phieu_Dat_ibfk_2` FOREIGN KEY (`ID_Phong`) REFERENCES `Phong` (`ID_Phong`)
+) ENGINE=InnoDB DEFAULT CHARSET=ucs2 COLLATE=ucs2_vietnamese_ci;
+
+INSERT INTO `Chi_Tiet_Phieu_Dat` (`ID_PhieuDat`, `ID_Phong`, `Ngay_Tra_Phong`) VALUES
+(1,	28,	'7/10/2023'),
+(2,	19,	'7/10/2023'),
+(3,	7,	'7/10/2023'),
+(4,	13,	'10/10/2023'),
+(4,	14,	'10/10/2023');
+
+DROP TABLE IF EXISTS `Dich_Vu`;
+CREATE TABLE `Dich_Vu` (
+  `ID_DichVu` int NOT NULL AUTO_INCREMENT,
+  `Ten_Dich_Vu` varchar(50) DEFAULT NULL,
+  `Tinh_Trang` varchar(50) DEFAULT NULL,
+  `Gia_Tien` varchar(50) NOT NULL,
+  PRIMARY KEY (`ID_DichVu`),
+  CONSTRAINT `Dich_Vu_ibfk_1` FOREIGN KEY (`ID_DichVu`) REFERENCES `Hoa_Don` (`ID_HoaDon`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+DROP TABLE IF EXISTS `Hoa_Don`;
+CREATE TABLE `Hoa_Don` (
+  `ID_HoaDon` int NOT NULL AUTO_INCREMENT,
+  `NgayLapHoaDon` varchar(50) NOT NULL,
+  `TenHoaDon` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID_HoaDon`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+DROP TABLE IF EXISTS `KhachHang`;
+CREATE TABLE `KhachHang` (
+  `ID_khachHang` int NOT NULL AUTO_INCREMENT,
+  `HoTen` varchar(200) COLLATE utf8mb3_vietnamese_ci NOT NULL,
+  `So_DT` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_vietnamese_ci DEFAULT NULL,
+  `So_Nguoi` varchar(12) CHARACTER SET utf8mb3 COLLATE utf8mb3_vietnamese_ci DEFAULT NULL,
+  PRIMARY KEY (`ID_khachHang`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_vietnamese_ci;
+
+INSERT INTO `KhachHang` (`ID_khachHang`, `HoTen`, `So_DT`, `So_Nguoi`) VALUES
+(1,	'Doan Minh Hieu',	'0338892231',	'3'),
+(2,	'Nguyen Thanh Ky',	'0842993373',	'2'),
+(3,	'Nguyen Huu Thuan',	'0339311232',	'2'),
+(4,	'Nguyen Nhat Truong',	'0293821123',	'8');
+
+DROP TABLE IF EXISTS `Loai_Phong`;
+CREATE TABLE `Loai_Phong` (
+  `ID_Loai_Phong` int NOT NULL,
+  `TenLoai` varchar(100) NOT NULL,
+  `GiaTienTheoDem` varchar(20) NOT NULL,
+  `GiaTienTheoNgay` varchar(20) NOT NULL,
+  `GiaTienTheoGio` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`ID_Loai_Phong`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `Loai_Phong` (`ID_Loai_Phong`, `TenLoai`, `GiaTienTheoDem`, `GiaTienTheoNgay`, `GiaTienTheoGio`) VALUES
+(1,	'Phòng loại C (Không máy lạnh)',	'160000',	'240000',	'35000'),
+(2,	'Phòng loại B (Có máy lạnh)',	'200000',	'370000',	'55000'),
+(3,	'Phòng loại A (Máy lạnh, Máy nóng lạnh)',	'285000',	'450000',	'85000'),
+(4,	'Phòng loại S (Tiện nghi đầy đủ)',	'350000',	'580000',	'100000');
+
+DROP TABLE IF EXISTS `Phieu_Dat_Phong`;
+CREATE TABLE `Phieu_Dat_Phong` (
+  `ID_khachhang` int NOT NULL,
+  `ID_PhieuDat` int NOT NULL,
+  `Ten_Phieu_Dat` varchar(50) COLLATE ucs2_vietnamese_ci DEFAULT NULL,
+  `Ngay_Dat` varchar(50) COLLATE ucs2_vietnamese_ci DEFAULT NULL,
+  `Dieu_Khoan` text COLLATE ucs2_vietnamese_ci,
+  PRIMARY KEY (`ID_PhieuDat`),
+  KEY `ID_khachhang` (`ID_khachhang`),
+  CONSTRAINT `Phieu_Dat_Phong_ibfk_1` FOREIGN KEY (`ID_khachhang`) REFERENCES `KhachHang` (`ID_khachHang`)
+) ENGINE=InnoDB DEFAULT CHARSET=ucs2 COLLATE=ucs2_vietnamese_ci;
+
+INSERT INTO `Phieu_Dat_Phong` (`ID_khachhang`, `ID_PhieuDat`, `Ten_Phieu_Dat`, `Ngay_Dat`, `Dieu_Khoan`) VALUES
+(1,	1,	'MinhHieu_6/10/2023',	'6/10/2023-18:00',	'abc xyz'),
+(2,	2,	'ThanhKy_ 6/10/2023',	'6/10/2023-21:00',	NULL),
+(3,	3,	'HuuThuan_6/10/2023',	'6/10/2023-23:00',	NULL),
+(4,	4,	'NhatTruong_6/10/2023',	'6/10/2023-19:50',	'gia đình đông con');
+
+DROP TABLE IF EXISTS `Phieu_Gia_Han`;
+CREATE TABLE `Phieu_Gia_Han` (
+  `ID_PhieuGiaHan` int NOT NULL AUTO_INCREMENT,
+  `NgayGiaHan` varchar(50) COLLATE utf16_vietnamese_ci NOT NULL,
+  `ID_PhieuDat` int NOT NULL,
+  `ID_Phong` int NOT NULL,
+  PRIMARY KEY (`ID_PhieuGiaHan`),
+  KEY `ID_PhieuDat` (`ID_PhieuDat`),
+  KEY `ID_Phong` (`ID_Phong`),
+  CONSTRAINT `Phieu_Gia_Han_ibfk_1` FOREIGN KEY (`ID_PhieuDat`) REFERENCES `Phieu_Dat_Phong` (`ID_PhieuDat`),
+  CONSTRAINT `Phieu_Gia_Han_ibfk_2` FOREIGN KEY (`ID_Phong`) REFERENCES `Phong` (`ID_Phong`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_vietnamese_ci;
+
+
+DROP TABLE IF EXISTS `Phong`;
+CREATE TABLE `Phong` (
+  `ID_Phong` int NOT NULL,
+  `So_Phong` varchar(50) COLLATE ucs2_vietnamese_ci NOT NULL,
+  `So_Tang` int NOT NULL,
+  `Suc_Chua` int NOT NULL,
+  `ID_Loai_Phong` int NOT NULL,
+  `DangSuDung` tinyint NOT NULL,
+  PRIMARY KEY (`ID_Phong`),
+  KEY `ID_Loai_Phong` (`ID_Loai_Phong`),
+  CONSTRAINT `Phong_ibfk_1` FOREIGN KEY (`ID_Loai_Phong`) REFERENCES `Loai_Phong` (`ID_Loai_Phong`)
+) ENGINE=InnoDB DEFAULT CHARSET=ucs2 COLLATE=ucs2_vietnamese_ci;
+
+INSERT INTO `Phong` (`ID_Phong`, `So_Phong`, `So_Tang`, `Suc_Chua`, `ID_Loai_Phong`, `DangSuDung`) VALUES
+(1,	'101',	1,	2,	1,	0),
+(2,	'102',	1,	2,	1,	0),
+(3,	'103',	1,	2,	1,	0),
+(4,	'104',	1,	2,	1,	0),
+(5,	'105',	1,	2,	1,	0),
+(6,	'106',	1,	2,	1,	0),
+(7,	'107',	1,	2,	2,	1),
+(8,	'108',	1,	2,	2,	0),
+(9,	'201',	2,	2,	2,	0),
+(10,	'202',	2,	2,	2,	0),
+(11,	'203',	2,	2,	2,	0),
+(12,	'204',	2,	2,	2,	0),
+(13,	'205',	2,	4,	2,	1),
+(14,	'206',	2,	4,	2,	1),
+(15,	'301',	3,	2,	2,	0),
+(16,	'302',	3,	2,	2,	0),
+(17,	'303',	3,	2,	3,	0),
+(18,	'304',	3,	2,	3,	0),
+(19,	'305',	3,	4,	3,	1),
+(20,	'306',	3,	4,	3,	0),
+(21,	'401',	4,	2,	2,	0),
+(22,	'402',	4,	2,	2,	0),
+(23,	'403',	4,	2,	3,	0),
+(24,	'404',	4,	2,	3,	0),
+(25,	'405',	4,	2,	3,	0),
+(26,	'406',	4,	2,	3,	0),
+(27,	'407',	4,	4,	3,	0),
+(28,	'501',	5,	2,	4,	1),
+(29,	'502',	5,	2,	4,	0),
+(30,	'503',	5,	2,	4,	0),
+(31,	'504',	5,	2,	4,	0),
+(32,	'505',	5,	4,	4,	0);
+
+-- 2023-10-06 15:29:48
